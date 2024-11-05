@@ -128,12 +128,10 @@ impl Lexer {
 pub fn do_lex() {
     print!("Enter mathematical expression: ");
     io::stdout().flush().expect("Failed to flush stdout");
-
     let mut input = String::new();
     io::stdin()
         .read_line(&mut input)
         .expect("Failed to read line");
-
     let input = input.trim().to_string();
     let mut lexer = Lexer::new(input);
 
