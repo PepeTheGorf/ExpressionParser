@@ -135,7 +135,6 @@ pub fn do_lex() {
         .expect("Failed to read line");
 
     let input = input.trim().to_string();
-
     let mut lexer = Lexer::new(input);
 
     if lexer.do_analysis() {
