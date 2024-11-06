@@ -4,7 +4,7 @@ use std::fmt::{Formatter, write};
 use std::io::{self, Write};
 
 
-enum Token {
+pub enum Token {
     PLUS(),
     MINUS(),
     MULTIPLY(),
@@ -12,6 +12,34 @@ enum Token {
     RPAREN(),
     LPAREN(),
     NUMBER(i32),
+}
+
+impl Token {
+    pub fn is_operand(&self) -> bool {
+        match self {
+            Token::NUMBER(value) => true,
+            _ => false
+        }
+    }
+
+
+
+    pub fn get_precedence(&self) -> i8 {
+        match self {
+            Token::MULTIPLY() | Token::DIVISION() => 2,
+            Token::PLUS() | Token::MINUS() => 1,
+            _ => -1
+        }
+    }
+}
+
+impl PartialEq for Token {
+    fn eq(&self, other: &Self) -> bool {
+        if other.to_string().eq(&self.to_string()) {
+            return true;
+        }
+        false
+    }
 }
 
 impl fmt::Display for Token {
@@ -30,7 +58,7 @@ impl fmt::Display for Token {
 
 pub struct Lexer {
     expression: String,
-    tokens: Vec<Token>
+    pub tokens: Vec<Token>
 }
 
 impl Lexer {
@@ -134,6 +162,8 @@ pub fn do_lex() {
         .expect("Failed to read line");
     let input = input.trim().to_string();
     let mut lexer = Lexer::new(input);
+
+
 
     if lexer.do_analysis() {
         lexer.print_tokens();
