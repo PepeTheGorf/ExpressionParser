@@ -1,7 +1,6 @@
-use std::error::Error;
 use std::fmt;
-use std::fmt::{Formatter, write};
-use std::io::{self, Write};
+use std::fmt::{Formatter};
+use std::io::{Write};
 
 
 pub enum Token {
@@ -17,12 +16,17 @@ pub enum Token {
 impl Token {
     pub fn is_operand(&self) -> bool {
         match self {
-            Token::NUMBER(value) => true,
+            Token::NUMBER(_value) => true,
             _ => false
         }
     }
 
-
+    pub fn get_value(&self) -> i32 {
+        match self {
+            Token::NUMBER(value) => return *value,
+            _ => -1
+        }
+    }
 
     pub fn get_precedence(&self) -> i8 {
         match self {
@@ -148,26 +152,5 @@ impl Lexer {
                 println!("{}", token);
             }
         }
-    }
-
-
-}
-
-pub fn do_lex() {
-    print!("Enter mathematical expression: ");
-    io::stdout().flush().expect("Failed to flush stdout");
-    let mut input = String::new();
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read line");
-    let input = input.trim().to_string();
-    let mut lexer = Lexer::new(input);
-
-
-
-    if lexer.do_analysis() {
-        lexer.print_tokens();
-    } else {
-        println!("Lexical analysis has failed!");
     }
 }
